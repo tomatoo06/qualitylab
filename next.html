@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHROMATIC SOUL</title>
+    <style>
+         @font-face {
+            font-family: 'DB Helvethaica X Ext';
+            src: url('./ThaiSansNeue-SemiBold.otf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DB Helvethaica X Ext';
+            background: url("Artboard 5 copy.png") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: opacity 0.6s ease;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .line {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            font-size: 25px;
+            color: #2b819f;
+            margin: 10px 0;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #nextBtn {
+            margin-top: 40px;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'DB Helvethaica X Ext';
+            background-color: #e35229;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease, transform 0.3s ease, background-color 0.3s ease;
+            pointer-events: none;
+        }
+
+        #nextBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #nextBtn:hover {
+            transform: scale(1.05);
+        }
+
+        #nextBtn:active {
+            transform: scale(0.95rem);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper" id="wrapper">
+        <div class="content-box" id="textBox"></div>
+        <button id="nextBtn" onclick="goNext()">NEXT</button>
+    </div>
+
+    <script>
+        const textBox = document.getElementById('textBox');
+        const nextBtn = document.getElementById('nextBtn');
+        const wrapper = document.getElementById('wrapper');
+
+        const firstParagraph = [
+            "CHROMATIC SOUL",
+            "จะพาคุณดำดิ่งกับโลกแห่งจินตนาการ",
+            "ที่คุณเองสามารถสร้างมันขึ้นมาได้"
+        ];
+
+        const secondParagraph = [
+            "เรามาร่วมสร้างจินตนาการนี้",
+            "ไปด้วยกันเถอะ"
+        ];
+
+        let currentSet = 0;
+        let currentLine = 0;
+        let delay = 1200;
+        let skipping = false;
+        let timer;
+
+        function showNextLine() {
+            const paragraph = currentSet === 0 ? firstParagraph : secondParagraph;
+
+            if (currentLine >= paragraph.length) {
+                if (currentSet === 0) {
+                    setTimeout(() => {
+                        textBox.innerHTML = "";
+                        currentSet = 1;
+                        currentLine = 0;
+                        delay = 1200;
+                        showNextLine();
+                    }, 1000);
+                } else {
+                    nextBtn.classList.add('visible');
+                }
+                return;
+            }
+
+            const line = document.createElement('div');
+            line.classList.add('line');
+            line.textContent = paragraph[currentLine];
+            textBox.appendChild(line);
+
+            setTimeout(() => {
+                line.classList.add('visible');
+            }, 20);
+
+            currentLine++;
+            timer = setTimeout(showNextLine, delay);
+        }
+
+        document.body.addEventListener('click', () => {
+            if (!skipping) {
+                skipping = true;
+                clearTimeout(timer);
+                delay = delay > 300 ? delay - 200 : 150;
+                showNextLine();
+            }
+        });
+
+        function goNext() {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = "page6.html";
+            }, 600);
+        }
+
+        window.onload = () => {
+            showNextLine();
+        };
+    </script>
+</body>
+
+</html>

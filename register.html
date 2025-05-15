@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+        @font-face {
+            font-family: 'DB Helvethaica X Ext';
+            src: url('./ThaiSansNeue-SemiBold.otf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'DB Helvethaica X Ext', sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: url("Artboard 5 copy.png") no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            padding: 2rem 1.5rem 2rem;
+            backdrop-filter: blur(8px);
+            animation: popUp 0.4s ease-in-out;
+        }
+
+        @keyframes popUp {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            height: 200px;
+            margin-bottom: 0.1rem;
+            object-fit: contain;
+        }
+
+        h2 {
+            margin: 0;
+            color: #e35229;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: -7vh;
+        }
+
+        form {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input {
+            padding: 0.7rem 1rem;
+            border: none;
+            border-radius: 999px;
+            background: #e0f7ff;
+            color: #2e7791;
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        input::placeholder {
+            color: #2e7791;
+        }
+
+        button {
+            background: #e35229;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.15s ease-in-out;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <img src="Logo2-03.png" alt="โลโก้งาน" class="logo" />
+        <h2>REGISTER</h2>
+        <form id="registerForm">
+            <input type="text" id="name" placeholder="ชื่อ" required />
+            <input type="text" id="surname" placeholder="นามสกุล" required />
+            <input type="text" id="studentId" placeholder="รหัสนักศึกษา" required />
+            <button type="submit">LOGIN</button>
+        </form>
+    </div>
+
+    <script>
+        window.onload = () => {
+            document.body.style.opacity = '1';
+        };
+
+        document.getElementById("registerForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const surname = document.getElementById("surname").value.trim();
+            const studentId = document.getElementById("studentId").value.trim();
+
+            if (!name || !surname || !studentId) {
+                alert("กรุณากรอกข้อมูลให้ครบ");
+                return;
+            }
+
+            const userData = { name, surname, studentId };
+            localStorage.setItem("userData", JSON.stringify(userData));
+
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = "choose.html"; // ไปหน้าถัดไป
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

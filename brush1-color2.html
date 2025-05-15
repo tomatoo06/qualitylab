@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Result</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #fffceb;
+            background-image: url("WEBSITE_BG.png");
+            /* ใส่ชื่อไฟล์ background */
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 0.5s ease, transform 0.5s ease;
+            /* Transition สำหรับการเปลี่ยนฉาก */
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            margin-bottom: 10px;
+            /* ลดระยะห่างระหว่างรูปกับปุ่ม QR */
+            border: none;
+        }
+
+        .qr-button {
+            margin-top: -150px;
+            /* ลดระยะห่างระหว่างปุ่ม QR กับรูป */
+            
+            padding: 12px 28px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px;
+            background-color: #cc4422;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .qr-button:hover {
+            background-color: #b43c1f;
+            transform: scale(1.05);
+        }
+
+        .qr-popup {
+            perspective: 1000px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+            z-index: 10;
+        }
+
+        .qr-card {
+            width: 90vw;
+            max-width: 250px;
+            aspect-ratio: 1 / 1;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            position: relative;
+        }
+
+        .qr-front,
+        .qr-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-front img,
+        .qr-back img {
+            width: 90%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .qr-back {
+            transform: rotateY(180deg);
+        }
+
+        .show-popup {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 5;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .close-area {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background-color: white;
+            border: 2px solid #aaa;
+            border-radius: 50%;
+            padding: 4px 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .qr-button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            .result-img {
+                max-width: 90vw;
+            }
+
+            .qr-card {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- รูปภาพผลลัพธ์ -->
+    <img src="WEBSITE_พู่กันแตกปลาย_ฟ้า.png" alt="Your Personality Result" class="result-img" />
+
+    <!-- ปุ่ม QR ที่เปลี่ยนเป็น Element (ภาพ) -->
+    <div class="qr-button" onclick="toggleQR()">QR CODE</div> <!-- ใช้ div แทนปุ่มปกติ -->
+
+    <!-- พื้นหลัง popup -->
+    <div class="overlay" id="overlay" onclick="closeQR()"></div>
+
+    <!-- QR Popup -->
+    <div class="qr-popup" id="qrPopup">
+        <div class="qr-card" id="qrCard">
+            <div class="qr-front">
+                <img src="IMG_5704.PNG" alt="QR Code" />
+            </div>
+            <div class="qr-back">
+                <img src="IMG_5704.PNG" alt="QR Code Back" />
+            </div>
+        </div>
+        <div class="close-area" onclick="closeQR()">×</div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        function toggleQR() {
+            const popup = document.getElementById('qrPopup');
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('qrCard');
+
+            overlay.classList.add('active');
+            popup.classList.add('show-popup');
+
+            setTimeout(() => {
+                card.classList.add('flip-card');
+            }, 100);
+        }
+
+        function closeQR() {
+            const popup = document.getElementById('qrPopup');
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('qrCard');
+
+            card.classList.remove('flip-card');
+            popup.classList.remove('show-popup');
+            overlay.classList.remove('active');
+        }
+    </script>
+
+</body>
+
+</html>

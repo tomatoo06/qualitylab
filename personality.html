@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Personality</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        @font-face {
+            font-family: 'DB Helvethaica X Ext';
+            src: local('DB Helvethaica X Ext');
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DB Helvethaica X Ext', sans-serif;
+            background-image: url('WEBSITE_BG.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 12px;
+        }
+
+        .personality-img {
+            max-width: 70%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 16px;
+            
+        }
+
+        .qr-button {
+            margin-top: -90px;
+            padding: 10px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            background-color: #e35229;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .qr-button:hover {
+            background-color: #3c6475;
+        }
+
+        .overlay {
+            position: fixed;
+            display: none;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .qr-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            transition: 0.3s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .qr-popup.show-popup {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .qr-card {
+            width: 220px;
+            height: 220px;
+            perspective: 1000px;
+            position: relative;
+    
+        }
+
+        .qr-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 15px;
+             border: 20px solid white;
+        }
+
+        .qr-front,
+        .qr-back {
+            position: absolute;
+            backface-visibility: hidden;
+            transition: transform 0.6s;
+            width: 100%;
+            height: 100%;
+            
+        }
+
+        .qr-back {
+            transform: rotateY(180deg);
+        }
+
+        .qr-card.flip-card .qr-front {
+            transform: rotateY(180deg);
+        }
+
+        .qr-card.flip-card .qr-back {
+            transform: rotateY(360deg);
+        }
+
+        .close-area {
+            margin-top: 10px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1></h1>
+    <img id="person-img" class="personality-img" src="" alt="บุคลิกของคุณ">
+    <button class="qr-button" onclick="toggleQR()">QR CODE</button>
+
+    <div class="overlay" id="overlay" onclick="closeQR()"></div>
+
+    <div class="qr-popup" id="qrPopup">
+        <div class="qr-card" id="qrCard">
+            <div class="qr-front">
+                <img id="qr-front-img" src="" alt="QR Code Front" />
+            </div>
+            <div class="qr-back">
+                <img id="qr-back-img" src="" alt="QR Code Back" />
+            </div>
+        </div>
+        <div class="close-area" onclick="closeQR()">×</div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const brush = params.get('brush');
+        const color = params.get('color');
+
+        const personSrc = `personalities/${brush}-${color}.png`;
+        const qrSrc = `qr/qr-${brush}-${color}.png`;
+
+        document.getElementById('person-img').src = personSrc;
+        document.getElementById('qr-front-img').src = qrSrc;
+        document.getElementById('qr-back-img').src = qrSrc;
+
+        function toggleQR() {
+            const popup = document.getElementById('qrPopup');
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('qrCard');
+
+            overlay.classList.add('active');
+            popup.classList.add('show-popup');
+
+            setTimeout(() => {
+                card.classList.add('flip-card');
+            }, 100);
+        }
+
+        function closeQR() {
+            const popup = document.getElementById('qrPopup');
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('qrCard');
+
+            card.classList.remove('flip-card');
+            popup.classList.remove('show-popup');
+            overlay.classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>

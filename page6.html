@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>เลือกแปรง</title>
+    <style>
+        @font-face {
+            font-family: 'DB Helvethaica X Ext';
+            src: url('./ThaiSansNeue-SemiBold.otf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DB Helvethaica X Ext';
+            background: url("Artboard 5 copy.png") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 26px;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: #e35229;
+            z-index: 1;
+        }
+
+        .selector-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            z-index: 1;
+        }
+
+        .arrow {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4f7d94;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease, color 0.3s ease;
+        }
+
+        .arrow:hover {
+            color: #e35229;
+            transform: scale(1.2);
+        }
+
+        #brush-image {
+            width: 225px;
+            height: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        button {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'DB Helvethaica X Ext';
+            background-color: #e35229;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            z-index: 1;
+            margin-top: 30px;
+        }
+
+        button:hover {
+            background-color: #3c6475;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .fade-out {
+            animation: fadeOut 0.6s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>คุณคิดว่าแปรงไหน<br>ดูเหมาะกับคุณ</h1>
+
+    <div class="selector-container">
+        <div class="arrow" onclick="prev()">&lt;</div>
+        <img id="brush-image" src="brush/brush1.png" alt="แปรงที่เลือก" />
+
+        <div class="arrow" onclick="next()">&gt;</div>
+    </div>
+
+    <button onclick="confirm()">CONFIRM</button>
+
+    <script>
+        let currentIndex = 1;
+        const brushImage = document.getElementById('brush-image');
+
+        function updateDisplay(newIndex) {
+            brushImage.style.opacity = 0;
+            setTimeout(() => {
+                brushImage.src = `brush/brush${newIndex}.png`;
+
+                brushImage.style.opacity = 1;
+            }, 150);
+        }
+
+        function prev() {
+            currentIndex = (currentIndex - 1 < 1) ? 4 : currentIndex - 1;
+            updateDisplay(currentIndex);
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1 > 4) ? 1 : currentIndex + 1;
+            updateDisplay(currentIndex);
+        }
+
+        function confirm() {
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = `select-color.html?brush=${currentIndex}`;
+                }, 600);
+            }
+
+    </script>
+</body>
+
+</html>
